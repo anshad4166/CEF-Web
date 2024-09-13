@@ -6,7 +6,8 @@ const MemberDetails = ({ member }) => {
     <div className="p-4">
       <img src={member.avatar} alt={member.name} className="w-32 h-32 rounded-full mx-auto mb-4" />
       <h2 className="text-2xl font-bold mb-2">{member.name}</h2>
-      <p className="text-gray-600 mb-4">{member.title}</p>
+      <p className="text-gray-600 mb-2">{member.title}</p>
+      <p className="text-gray-500 mb-4">{member.company}</p>
       <div className="mb-4">
         <h3 className="font-semibold mb-2">Contact Information:</h3>
         <p>Email: {member.email}</p>

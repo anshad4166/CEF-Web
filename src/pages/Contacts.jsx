@@ -11,7 +11,10 @@ const Contacts = () => {
   const [selectedMember, setSelectedMember] = useState(null);
 
   const filteredMembers = communityMembers.filter(member =>
-    member.name.toLowerCase().includes(searchTerm.toLowerCase())
+    member.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    member.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    member.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    member.phone.includes(searchTerm)
   );
 
   return (
@@ -19,7 +22,7 @@ const Contacts = () => {
       <h1 className="text-3xl font-bold mb-6">Community Members</h1>
       <Input
         type="text"
-        placeholder="Search members..."
+        placeholder="Search by name, profession, company, or phone number..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         className="mb-4"
@@ -29,7 +32,8 @@ const Contacts = () => {
           <Card key={member.id} className="hover:shadow-lg transition-shadow">
             <CardContent className="p-4">
               <h2 className="text-xl font-semibold mb-2">{member.name}</h2>
-              <p className="text-gray-600 mb-4">{member.title}</p>
+              <p className="text-gray-600 mb-2">{member.title}</p>
+              <p className="text-gray-500 mb-4">{member.company}</p>
               <Dialog>
                 <DialogTrigger asChild>
                   <Button onClick={() => setSelectedMember(member)}>View Details</Button>
