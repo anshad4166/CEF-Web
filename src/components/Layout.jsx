@@ -14,17 +14,19 @@ const Layout = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <header className="bg-primary text-white">
-        <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link to="/" className="flex items-center">
-            <img src="/logo.svg" alt="CEF Logo" className="h-10 w-auto mr-2" />
-            <span className="font-bold text-xl">CEF</span>
-          </Link>
-          <div className="md:hidden">
-            <button onClick={toggleMenu} className="text-white focus:outline-none">
-              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+        <nav className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <Link to="/" className="flex items-center">
+              <img src="/logo.svg" alt="CEF Logo" className="h-10 w-auto mr-2" />
+              <span className="font-bold text-xl">CEF</span>
+            </Link>
+            <div className="md:hidden">
+              <button onClick={toggleMenu} className="text-white focus:outline-none">
+                {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            </div>
           </div>
-          <ul className={`md:flex md:space-x-4 ${isMenuOpen ? 'block' : 'hidden'} absolute md:relative top-full left-0 right-0 bg-primary md:bg-transparent z-50 md:z-auto transition-all duration-300 ease-in-out ${isMenuOpen ? 'max-h-screen' : 'max-h-0'} md:max-h-full overflow-hidden`}>
+          <ul className={`md:flex md:space-x-4 ${isMenuOpen ? 'block' : 'hidden'} md:block mt-4 md:mt-0`}>
             {navItems.map((item) => (
               <li key={item.to} className="md:inline-block">
                 <Link
