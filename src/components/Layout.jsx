@@ -13,7 +13,7 @@ const Layout = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="bg-blue-600 text-white">
+      <header className="bg-primary text-white">
         <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
           <Link to="/" className="flex items-center">
             <img src="/logo.svg" alt="CEF Logo" className="h-10 w-auto mr-2" />
@@ -24,7 +24,7 @@ const Layout = () => {
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
-          <ul className={`md:flex md:space-x-4 ${isMenuOpen ? 'block' : 'hidden'} absolute md:relative top-full left-0 right-0 bg-blue-600 md:bg-transparent z-50`}>
+          <ul className={`md:flex md:space-x-4 ${isMenuOpen ? 'block' : 'hidden'} absolute md:relative top-full left-0 right-0 bg-primary md:bg-transparent z-50 md:z-auto transition-all duration-300 ease-in-out ${isMenuOpen ? 'max-h-screen' : 'max-h-0'} md:max-h-full overflow-hidden`}>
             {navItems.map((item) => (
               <li key={item.to} className="md:inline-block">
                 <Link

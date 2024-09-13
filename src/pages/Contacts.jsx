@@ -27,7 +27,7 @@ const Contacts = () => {
         onChange={(e) => setSearchTerm(e.target.value)}
         className="mb-4"
       />
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredMembers.map(member => (
           <Card key={member.id} className="hover:shadow-lg transition-shadow">
             <CardContent className="p-4">
@@ -38,7 +38,7 @@ const Contacts = () => {
                 <DialogTrigger asChild>
                   <Button onClick={() => setSelectedMember(member)}>View Details</Button>
                 </DialogTrigger>
-                <DialogContent>
+                <DialogContent className="sm:max-w-[425px]">
                   <DialogHeader>
                     <DialogTitle>{member.name}</DialogTitle>
                   </DialogHeader>
