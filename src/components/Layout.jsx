@@ -8,8 +8,11 @@ const Layout = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <header className="bg-blue-600 text-white">
-        <nav className="container mx-auto px-4 py-4">
-          <ul className="flex space-x-4">
+        <nav className="container mx-auto px-4 py-4 flex items-center">
+          <Link to="/" className="mr-8">
+            <img src="/logo.svg" alt="Community Logo" className="h-10 w-auto" />
+          </Link>
+          <ul className="flex space-x-4 flex-grow">
             {navItems.map((item) => (
               <li key={item.to}>
                 <Link
