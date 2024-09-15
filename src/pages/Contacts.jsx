@@ -10,13 +10,13 @@ import MemberDetails from '../components/MemberDetails';
 const Contacts = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedMember, setSelectedMember] = useState(null);
-  const [professionFilter, setProfessionFilter] = useState('');
-  const [companyFilter, setCompanyFilter] = useState('');
-  const [locationFilter, setLocationFilter] = useState('');
+  const [professionFilter, setProfessionFilter] = useState('all');
+  const [companyFilter, setCompanyFilter] = useState('all');
+  const [locationFilter, setLocationFilter] = useState('all');
 
-  const uniqueProfessions = useMemo(() => [...new Set(communityMembers.map(member => member.title))], []);
-  const uniqueCompanies = useMemo(() => [...new Set(communityMembers.map(member => member.company))], []);
-  const uniqueLocations = useMemo(() => [...new Set(communityMembers.map(member => member.location || 'Unknown'))], []);
+  const uniqueProfessions = useMemo(() => ['all', ...new Set(communityMembers.map(member => member.title))], []);
+  const uniqueCompanies = useMemo(() => ['all', ...new Set(communityMembers.map(member => member.company))], []);
+  const uniqueLocations = useMemo(() => ['all', ...new Set(communityMembers.map(member => member.location || 'Unknown'))], []);
 
   const filteredMembers = useMemo(() => {
     return communityMembers.filter(member =>
@@ -24,9 +24,9 @@ const Contacts = () => {
         member.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         member.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
         member.phone.includes(searchTerm)) &&
-      (professionFilter === '' || member.title === professionFilter) &&
-      (companyFilter === '' || member.company === companyFilter) &&
-      (locationFilter === '' || (member.location || 'Unknown') === locationFilter)
+      (professionFilter === 'all' || member.title === professionFilter) &&
+      (companyFilter === 'all' || member.company === companyFilter) &&
+      (locationFilter === 'all' || (member.location || 'Unknown') === locationFilter)
     );
   }, [searchTerm, professionFilter, companyFilter, locationFilter]);
 
@@ -46,9 +46,8 @@ const Contacts = () => {
             <SelectValue placeholder="Filter by Profession" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All Professions</SelectItem>
             {uniqueProfessions.map((profession) => (
-              <SelectItem key={profession} value={profession}>{profession}</SelectItem>
+              <SelectItem key={profession} value={profession}>{profession === 'all' ? 'All Professions' : profession}</SelectItem>
             ))}
           </SelectContent>
         </Select>
@@ -57,9 +56,8 @@ const Contacts = () => {
             <SelectValue placeholder="Filter by Company" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All Companies</SelectItem>
             {uniqueCompanies.map((company) => (
-              <SelectItem key={company} value={company}>{company}</SelectItem>
+              <SelectItem key={company} value={company}>{company === 'all' ? 'All Companies' : company}</SelectItem>
             ))}
           </SelectContent>
         </Select>
@@ -68,9 +66,8 @@ const Contacts = () => {
             <SelectValue placeholder="Filter by Location" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All Locations</SelectItem>
             {uniqueLocations.map((location) => (
-              <SelectItem key={location} value={location}>{location}</SelectItem>
+              <SelectItem key={location} value={location}>{location === 'all' ? 'All Locations' : location}</SelectItem>
             ))}
           </SelectContent>
         </Select>
