@@ -1,12 +1,11 @@
 import React, { useState, useMemo } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { communityMembers } from '../mockData';
 import MemberDetails from '../components/MemberDetails';
-import { fetchContacts, updateContact } from '../api';
 
 const Contacts = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -15,26 +14,12 @@ const Contacts = () => {
   const [companyFilter, setCompanyFilter] = useState('all');
   const [locationFilter, setLocationFilter] = useState('all');
 
-  const queryClient = useQueryClient();
-
-  const { data: communityMembers, isLoading, error } = useQuery({
-    queryKey: ['contacts'],
-    queryFn: fetchContacts,
-  });
-
-  const updateContactMutation = useMutation({
-    mutationFn: ({ contactId, updatedData }) => updateContact(contactId, updatedData),
-    onSuccess: () => {
-      queryClient.invalidateQueries(['contacts']);
-    },
-  });
-
-  const uniqueProfessions = useMemo(() => ['all', ...new Set(communityMembers?.map(member => member.title) || [])], [communityMembers]);
-  const uniqueCompanies = useMemo(() => ['all', ...new Set(communityMembers?.map(member => member.company) || [])], [communityMembers]);
-  const uniqueLocations = useMemo(() => ['all', ...new Set(communityMembers?.map(member => member.location || 'Unknown') || [])], [communityMembers]);
+  const uniqueProfessions = useMemo(() => ['all', ...new Set(communityMembers.map(member => member.title))], []);
+  const uniqueCompanies = useMemo(() => ['all', ...new Set(communityMembers.map(member => member.company))], []);
+  const uniqueLocations = useMemo(() => ['all', ...new Set(communityMembers.map(member => member.location || 'Unknown'))], []);
 
   const filteredMembers = useMemo(() => {
-    return communityMembers?.filter(member =>
+    return communityMembers.filter(member =>
       (member.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         member.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         member.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -42,11 +27,8 @@ const Contacts = () => {
       (professionFilter === 'all' || member.title === professionFilter) &&
       (companyFilter === 'all' || member.company === companyFilter) &&
       (locationFilter === 'all' || (member.location || 'Unknown') === locationFilter)
-    ) || [];
-  }, [communityMembers, searchTerm, professionFilter, companyFilter, locationFilter]);
-
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
+    );
+  }, [searchTerm, professionFilter, companyFilter, locationFilter]);
 
   return (
     <div className="container mx-auto p-4">
@@ -105,10 +87,7 @@ const Contacts = () => {
                   <DialogHeader>
                     <DialogTitle>{member.name}</DialogTitle>
                   </DialogHeader>
-                  <MemberDetails
-                    member={member}
-                    onUpdate={(updatedData) => updateContactMutation.mutate({ contactId: member.id, updatedData })}
-                  />
+                  <MemberDetails member={member} />
                 </DialogContent>
               </Dialog>
             </CardContent>
