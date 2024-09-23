@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { communityMembers } from '../mockData';
 import MemberDetails from '../components/MemberDetails';
-import FilterDropdown from '../components/FilterDropdown';
+import FilterButton from '../components/FilterButton';
 import { Button } from "@/components/ui/button";
 import { Grid, List, LayoutGrid } from 'lucide-react';
 import { motion } from "framer-motion";
@@ -12,14 +12,14 @@ import { motion } from "framer-motion";
 const Contacts = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedMember, setSelectedMember] = useState(null);
-  const [professionFilter, setProfessionFilter] = useState('all');
-  const [companyFilter, setCompanyFilter] = useState('all');
-  const [locationFilter, setLocationFilter] = useState('all');
+  const [selectedProfessions, setSelectedProfessions] = useState([]);
+  const [selectedCompanies, setSelectedCompanies] = useState([]);
+  const [selectedLocations, setSelectedLocations] = useState([]);
   const [viewMode, setViewMode] = useState('grid');
 
-  const uniqueProfessions = useMemo(() => ['all', ...new Set(communityMembers.map(member => member.title))], []);
-  const uniqueCompanies = useMemo(() => ['all', ...new Set(communityMembers.map(member => member.company))], []);
-  const uniqueLocations = useMemo(() => ['all', ...new Set(communityMembers.map(member => member.location || 'Unknown'))], []);
+  const uniqueProfessions = useMemo(() => [...new Set(communityMembers.map(member => member.title))], []);
+  const uniqueCompanies = useMemo(() => [...new Set(communityMembers.map(member => member.company))], []);
+  const uniqueLocations = useMemo(() => [...new Set(communityMembers.map(member => member.location || 'Unknown'))], []);
 
   const filteredMembers = useMemo(() => {
     return communityMembers.filter(member =>
@@ -27,11 +27,11 @@ const Contacts = () => {
         member.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         member.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
         member.phone.includes(searchTerm)) &&
-      (professionFilter === 'all' || member.title === professionFilter) &&
-      (companyFilter === 'all' || member.company === companyFilter) &&
-      (locationFilter === 'all' || (member.location || 'Unknown') === locationFilter)
+      (selectedProfessions.length === 0 || selectedProfessions.includes(member.title)) &&
+      (selectedCompanies.length === 0 || selectedCompanies.includes(member.company)) &&
+      (selectedLocations.length === 0 || selectedLocations.includes(member.location || 'Unknown'))
     );
-  }, [searchTerm, professionFilter, companyFilter, locationFilter]);
+  }, [searchTerm, selectedProfessions, selectedCompanies, selectedLocations]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -54,34 +54,29 @@ const Contacts = () => {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-6">Community Members</h1>
-      <div className="mb-4 space-y-4">
+      <div className="mb-4 flex flex-wrap items-center gap-2">
         <Input
           type="text"
           placeholder="Search by name, profession, company, or phone number..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full"
+          className="flex-grow"
         />
-        <div className="flex flex-wrap gap-2">
-          <FilterDropdown
-            options={uniqueProfessions}
-            value={professionFilter}
-            onChange={setProfessionFilter}
-            placeholder="Profession"
-          />
-          <FilterDropdown
-            options={uniqueCompanies}
-            value={companyFilter}
-            onChange={setCompanyFilter}
-            placeholder="Company"
-          />
-          <FilterDropdown
-            options={uniqueLocations}
-            value={locationFilter}
-            onChange={setLocationFilter}
-            placeholder="Location"
-          />
-        </div>
+        <FilterButton
+          options={uniqueProfessions}
+          selectedOptions={selectedProfessions}
+          onChange={setSelectedProfessions}
+        />
+        <FilterButton
+          options={uniqueCompanies}
+          selectedOptions={selectedCompanies}
+          onChange={setSelectedCompanies}
+        />
+        <FilterButton
+          options={uniqueLocations}
+          selectedOptions={selectedLocations}
+          onChange={setSelectedLocations}
+        />
       </div>
       <div className="flex justify-end mb-4 space-x-2">
         <Button variant={viewMode === 'grid' ? 'default' : 'outline'} onClick={() => setViewMode('grid')}><Grid className="h-4 w-4" /></Button>
