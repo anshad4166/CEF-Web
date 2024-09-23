@@ -18,7 +18,7 @@ const Index = () => {
             <p>Our members come from various industries and backgrounds.</p>
           </div>
           <div className="bg-white bg-opacity-20 p-6 rounded-lg">
-            <img src="https://via.placeholder.com/300x200.png?text=Networking+Opportunities" alt="Networking Opportunities" className="w-full h-40 object-cover rounded-lg mb-4" />
+            <img src="\public\networking.jpg" alt="Networking Opportunities" className="w-full h-40 object-cover rounded-lg mb-4" />
             <h2 className="text-xl md:text-2xl font-semibold mb-4">Networking Opportunities</h2>
             <p>Connect with fellow entrepreneurs and expand your network.</p>
           </div>
