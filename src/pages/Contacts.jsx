@@ -63,16 +63,19 @@ const Contacts = () => {
           className="flex-grow"
         />
         <FilterButton
+          title="Professions"
           options={uniqueProfessions}
           selectedOptions={selectedProfessions}
           onChange={setSelectedProfessions}
         />
         <FilterButton
+          title="Companies"
           options={uniqueCompanies}
           selectedOptions={selectedCompanies}
           onChange={setSelectedCompanies}
         />
         <FilterButton
+          title="Locations"
           options={uniqueLocations}
           selectedOptions={selectedLocations}
           onChange={setSelectedLocations}
