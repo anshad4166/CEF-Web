@@ -14,7 +14,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-primary flex flex-col items-center justify-center text-white px-4 py-8">
       <div className="max-w-6xl mx-auto text-center">
-        <img src="/Logo.png" alt="CEF Logo" className="w-32 h-32 mx-auto mb-8" />
+        <img src="public\Logo.png" alt="CEF Logo" className="w-32 h-32 mx-auto mb-8" />
         <h1 className="text-3xl md:text-5xl font-bold mb-6">Welcome to Chennamangallur Entrepreneurs Forum</h1>
         <p className="text-lg md:text-xl mb-8">
           Join our thriving community of entrepreneurs. Connect, collaborate, and grow together!
