@@ -9,6 +9,8 @@ const Index = () => {
     { platform: 'Instagram', content: 'Check out our latest workshop highlights', link: 'https://instagram.com/post1' },
     { platform: 'LinkedIn', content: 'CEF members share their success stories', link: 'https://linkedin.com/post2' },
     { platform: 'Instagram', content: 'Entrepreneurship tips from our mentors', link: 'https://instagram.com/post2' },
+    { platform: 'LinkedIn', content: 'Announcing our new partnership with Tech Innovators', link: 'https://linkedin.com/post3' },
+    { platform: 'Instagram', content: 'Behind the scenes at our annual conference', link: 'https://instagram.com/post3' },
   ];
 
   return (

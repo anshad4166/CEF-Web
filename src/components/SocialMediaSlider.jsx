@@ -5,19 +5,21 @@ import { ExternalLink } from 'lucide-react';
 
 const SocialMediaSlider = ({ posts }) => {
   return (
-    <Carousel className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto">
-      <CarouselContent>
+    <Carousel className="w-full max-w-5xl mx-auto">
+      <CarouselContent className="-ml-2 md:-ml-4">
         {posts.map((post, index) => (
-          <CarouselItem key={index}>
-            <Card>
-              <CardContent className="flex flex-col items-center justify-center p-6">
-                <h3 className="text-lg font-semibold mb-2">{post.platform}</h3>
-                <p className="text-sm text-gray-600 mb-4 text-center">{post.content}</p>
+          <CarouselItem key={index} className="pl-2 md:pl-4 md:basis-1/3">
+            <Card className="h-full">
+              <CardContent className="flex flex-col items-center justify-between p-4 h-full">
+                <div>
+                  <h3 className="text-lg font-semibold mb-2">{post.platform}</h3>
+                  <p className="text-sm text-gray-600 mb-4 text-center">{post.content}</p>
+                </div>
                 <a
                   href={post.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-primary hover:underline flex items-center"
+                  className="text-primary hover:underline flex items-center mt-auto"
                 >
                   View Post <ExternalLink className="w-4 h-4 ml-1" />
                 </a>
