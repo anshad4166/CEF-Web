@@ -3,12 +3,12 @@ import React from 'react';
 const AboutCEF = () => {
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">About CEF (Community Engagement Forum)</h1>
+      <h1 className="text-3xl font-bold mb-6">About CEF (Chennamangallur Entrepreneurs Forum)</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div>
           <h2 className="text-2xl font-semibold mb-4">Our Mission</h2>
           <p className="mb-4">
-            CEF is dedicated to fostering a vibrant community where members can connect, collaborate, and grow together. We aim to create a platform that empowers individuals from diverse backgrounds to share knowledge, skills, and experiences.
+            CEF - Chennamangallur Entrepreneurship Forum is a entrepreneurship community established in a village called Chennamangallur in Calicut, Kerala to promote entrepreneurship and enlightening the youth of this place about the different opportunities outside of their network which they have never know before.
           </p>
         </div>
         <div>
