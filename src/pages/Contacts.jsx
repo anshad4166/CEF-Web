@@ -1,11 +1,13 @@
 import React, { useState, useMemo } from 'react';
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { communityMembers } from '../mockData';
 import MemberDetails from '../components/MemberDetails';
+import FilterDropdown from '../components/FilterDropdown';
+import { Button } from "@/components/ui/button";
+import { Grid, List, LayoutGrid } from 'lucide-react';
+import { motion } from "framer-motion";
 
 const Contacts = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -13,6 +15,7 @@ const Contacts = () => {
   const [professionFilter, setProfessionFilter] = useState('all');
   const [companyFilter, setCompanyFilter] = useState('all');
   const [locationFilter, setLocationFilter] = useState('all');
+  const [viewMode, setViewMode] = useState('grid');
 
   const uniqueProfessions = useMemo(() => ['all', ...new Set(communityMembers.map(member => member.title))], []);
   const uniqueCompanies = useMemo(() => ['all', ...new Set(communityMembers.map(member => member.company))], []);
@@ -30,70 +33,101 @@ const Contacts = () => {
     );
   }, [searchTerm, professionFilter, companyFilter, locationFilter]);
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1
+    }
+  };
+
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-6">Community Members</h1>
-      <div className="mb-4 flex flex-wrap gap-4">
+      <div className="mb-4 space-y-4">
         <Input
           type="text"
           placeholder="Search by name, profession, company, or phone number..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="flex-grow"
+          className="w-full"
         />
-        <Select value={professionFilter} onValueChange={setProfessionFilter}>
-          <SelectTrigger className="w-[200px]">
-            <SelectValue placeholder="Filter by Profession" />
-          </SelectTrigger>
-          <SelectContent>
-            {uniqueProfessions.map((profession) => (
-              <SelectItem key={profession} value={profession}>{profession === 'all' ? 'All Professions' : profession}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        <Select value={companyFilter} onValueChange={setCompanyFilter}>
-          <SelectTrigger className="w-[200px]">
-            <SelectValue placeholder="Filter by Company" />
-          </SelectTrigger>
-          <SelectContent>
-            {uniqueCompanies.map((company) => (
-              <SelectItem key={company} value={company}>{company === 'all' ? 'All Companies' : company}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        <Select value={locationFilter} onValueChange={setLocationFilter}>
-          <SelectTrigger className="w-[200px]">
-            <SelectValue placeholder="Filter by Location" />
-          </SelectTrigger>
-          <SelectContent>
-            {uniqueLocations.map((location) => (
-              <SelectItem key={location} value={location}>{location === 'all' ? 'All Locations' : location}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <div className="flex flex-wrap gap-2">
+          <FilterDropdown
+            options={uniqueProfessions}
+            value={professionFilter}
+            onChange={setProfessionFilter}
+            placeholder="Profession"
+          />
+          <FilterDropdown
+            options={uniqueCompanies}
+            value={companyFilter}
+            onChange={setCompanyFilter}
+            placeholder="Company"
+          />
+          <FilterDropdown
+            options={uniqueLocations}
+            value={locationFilter}
+            onChange={setLocationFilter}
+            placeholder="Location"
+          />
+        </div>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="flex justify-end mb-4 space-x-2">
+        <Button variant={viewMode === 'grid' ? 'default' : 'outline'} onClick={() => setViewMode('grid')}><Grid className="h-4 w-4" /></Button>
+        <Button variant={viewMode === 'list' ? 'default' : 'outline'} onClick={() => setViewMode('list')}><List className="h-4 w-4" /></Button>
+        <Button variant={viewMode === 'compact' ? 'default' : 'outline'} onClick={() => setViewMode('compact')}><LayoutGrid className="h-4 w-4" /></Button>
+      </div>
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className={`grid gap-4 ${
+          viewMode === 'grid'
+            ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
+            : viewMode === 'list'
+            ? 'grid-cols-1'
+            : 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-4'
+        }`}
+      >
         {filteredMembers.map(member => (
-          <Card key={member.id} className="hover:shadow-lg transition-shadow">
-            <CardContent className="p-4">
-              <h2 className="text-xl font-semibold mb-2">{member.name}</h2>
-              <p className="text-gray-600 mb-2">{member.title}</p>
-              <p className="text-gray-500 mb-4">{member.company}</p>
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button onClick={() => setSelectedMember(member)}>View Details</Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px]">
-                  <DialogHeader>
-                    <DialogTitle>{member.name}</DialogTitle>
-                  </DialogHeader>
-                  <MemberDetails member={member} />
-                </DialogContent>
-              </Dialog>
-            </CardContent>
-          </Card>
+          <motion.div key={member.id} variants={itemVariants}>
+            <Card className="h-full hover:shadow-lg transition-shadow">
+              <CardContent className={`p-4 ${viewMode === 'compact' ? 'text-sm' : ''}`}>
+                {viewMode !== 'compact' && (
+                  <img src={member.avatar} alt={member.name} className="w-20 h-20 rounded-full mx-auto mb-4" />
+                )}
+                <h2 className={`font-semibold mb-2 ${viewMode === 'compact' ? 'text-base' : 'text-xl'}`}>{member.name}</h2>
+                <p className="text-gray-600 mb-2">{member.title}</p>
+                {viewMode !== 'compact' && (
+                  <p className="text-gray-500 mb-4">{member.company}</p>
+                )}
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button onClick={() => setSelectedMember(member)} className="w-full">View Details</Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                      <DialogTitle>{member.name}</DialogTitle>
+                    </DialogHeader>
+                    <MemberDetails member={member} />
+                  </DialogContent>
+                </Dialog>
+              </CardContent>
+            </Card>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </div>
   );
 };
